@@ -5,3 +5,16 @@ const supabase = window.supabase.createClient(
     supabaseUrl,
     supabaseKey
 );
+
+async function testConnection() {
+
+    const { data, error } = await supabase
+        .from("appointments")
+        .select("*");
+
+    console.log(data);
+    console.log(error);
+
+}
+
+testConnection();
