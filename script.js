@@ -7,7 +7,7 @@ const client = window.supabase.createClient(
 );
 
 async function loadAppointments() {
-    const { data, error } = await supabaseClient
+    const { data, error } = await client
         .from("appointments")
         .select("*");
 
