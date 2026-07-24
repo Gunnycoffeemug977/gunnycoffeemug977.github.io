@@ -7,6 +7,18 @@ const client = window.supabase.createClient(
 );
 
 async function loadAppointments() {
+    const { data, error } = await supabaseClient
+        .from("appointments")
+        .select("*");
+
+    console.log("DATA:", data);
+    console.log("ERROR:", error);
+}
+
+loadAppointments();
+
+/*
+async function loadAppointments() {
 
     const { data, error } = await client
         .from("appointments")
@@ -34,3 +46,4 @@ async function loadAppointments() {
 }
 
 loadAppointments();
+*/
