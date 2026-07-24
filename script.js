@@ -7,6 +7,7 @@ const client = window.supabase.createClient(
     PUBLISHABLE_KEY
 );
 
+
 // 2. Function to load appointments
 async function loadAppointments() {
 
@@ -22,36 +23,52 @@ async function loadAppointments() {
     const container = document.getElementById("appointments");
     container.innerHTML = "";
 
-    // 3. Create a button for each appointment
+
+    // 3. Create a checkbox for each available appointment
     data.forEach(slot => {
 
-        const button = document.createElement("button");
+        const option = document.createElement("div");
 
         if (slot.booked) {
-            button.textContent = `${slot.date} ${slot.time} (Booked)`;
-            button.disabled = true;
+            option.innerHTML = `
+                <label>
+                    <input type="checkbox" disabled>
+                    ${slot.date} ${slot.time} (Booked)
+                </label>
+            `;
         } else {
-            button.textContent = `${slot.date} ${slot.time}`;
+            option.innerHTML = `
+                <label>
+                    <input type="checkbox" value="${slot.id}">
+                    ${slot.date} ${slot.time}
+                </label>
+            `;
 
-            // When this appointment is clicked...
-            button.onclick = async () => {
+            const checkbox = option.querySelector("input");
 
-                const { error } = await client
-                    .from("appointments")
-                    .update({ booked: true })
-                    .eq("id", slot.id);
+            checkbox.onchange = async () => {
 
-                if (error) {
-                    console.error(error);
-                } else {
-                    loadAppointments(); // Refresh the page
+                if (checkbox.checked) {
+
+                    const { error } = await client
+                        .from("appointments")
+                        .update({ booked: true })
+                        .eq("id", slot.id);
+
+                    if (error) {
+                        console.error(error);
+                    } else {
+                        loadAppointments();
+                    }
                 }
+
             };
         }
 
-        container.appendChild(button);
+        container.appendChild(option);
     });
 }
 
-// 4. Run the function when the page loads
+
+// 4. Run when page loads
 loadAppointments();
