@@ -1,3 +1,4 @@
+// 1. Connect to Supabase
 const PROJECT_URL = "https://wzjlytqilsjcboqpwldz.supabase.co/";
 const PUBLISHABLE_KEY = "sb_publishable_Nyt-q7qFiYGd7aV25sgGuQ_yk-1gHxN";
 
@@ -6,47 +7,7 @@ const client = window.supabase.createClient(
     PUBLISHABLE_KEY
 );
 
-async function loadAppointments() {
-    const { data, error } = await client
-        .from("appointments")
-        .select("*");
-
-    if (error) {
-        console.error(error);
-        return;
-    }
-
-    console.log(data);
-
-    const container = document.getElementById("appointments");
-
-    container.innerHTML = "";
-
-    data.forEach(slot => {
-        container.innerHTML += `
-            <p>${slot.date} | ${slot.time}</p>
-        `;
-    });
-}
-
-loadAppointments();
-
-
-/*
-//2nd try
-async function loadAppointments() {
-    const { data, error } = await client
-        .from("appointments")
-        .select("*");
-
-    console.log("DATA:", data);
-    console.log("ERROR:", error);
-}
-
-loadAppointments();
-
-
-//1st try
+// 2. Function to load appointments
 async function loadAppointments() {
 
     const { data, error } = await client
@@ -58,21 +19,24 @@ async function loadAppointments() {
         return;
     }
 
-    console.log(data);
-
     const container = document.getElementById("appointments");
-
     container.innerHTML = "";
 
+    // 3. Create a button for each appointment
     data.forEach(slot => {
 
-        container.innerHTML += `
-            <p>${slot.date} | ${slot.time}</p>
-        `;
+        const button = document.createElement("button");
 
+        if (slot.booked) {
+            button.textContent = `${slot.date} ${slot.time} (Booked)`;
+            button.disabled = true;
+        } else {
+            button.textContent = `${slot.date} ${slot.time}`;
+        }
+
+        container.appendChild(button);
     });
-
 }
 
+// 4. Run the function when the page loads
 loadAppointments();
-*/
