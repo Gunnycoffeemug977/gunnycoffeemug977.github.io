@@ -32,6 +32,21 @@ async function loadAppointments() {
             button.disabled = true;
         } else {
             button.textContent = `${slot.date} ${slot.time}`;
+
+            // When this appointment is clicked...
+            button.onclick = async () => {
+
+                const { error } = await client
+                    .from("appointments")
+                    .update({ booked: true })
+                    .eq("id", slot.id);
+
+                if (error) {
+                    console.error(error);
+                } else {
+                    loadAppointments(); // Refresh the page
+                }
+            };
         }
 
         container.appendChild(button);
