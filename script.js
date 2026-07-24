@@ -11,13 +11,42 @@ async function loadAppointments() {
         .from("appointments")
         .select("*");
 
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    console.log(data);
+
+    const container = document.getElementById("appointments");
+
+    container.innerHTML = "";
+
+    data.forEach(slot => {
+        container.innerHTML += `
+            <p>${slot.date} | ${slot.time}</p>
+        `;
+    });
+}
+
+loadAppointments();
+
+
+/*
+//2nd try
+async function loadAppointments() {
+    const { data, error } = await client
+        .from("appointments")
+        .select("*");
+
     console.log("DATA:", data);
     console.log("ERROR:", error);
 }
 
 loadAppointments();
 
-/*
+
+//1st try
 async function loadAppointments() {
 
     const { data, error } = await client
