@@ -20,7 +20,7 @@ async function loadAppointments() {
         return;
     }
 
-    const container = document.getElementById("appointments");
+    const container = document.getElementById("dates");
     container.innerHTML = "";
 
 
